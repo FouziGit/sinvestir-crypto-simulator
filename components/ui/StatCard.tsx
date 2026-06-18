@@ -4,7 +4,7 @@ type Tone = "default" | "brand" | "gold" | "gain" | "hero";
 
 interface StatCardProps {
   label: string;
-  value: string;
+  value: ReactNode;
   hint?: ReactNode;
   tone?: Tone;
   icon?: ReactNode;

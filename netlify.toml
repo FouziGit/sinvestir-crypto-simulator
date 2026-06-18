@@ -1,12 +1,20 @@
-# Déploiement Next.js sur Netlify.
-# Le plugin officiel @netlify/plugin-nextjs gère le rendu (SSR / routes / images).
+# Déploiement Netlify — export statique Next.js (output: "export").
+# Aucune fonction serverless : le dossier `out/` est servi tel quel.
 
 [build]
   command = "npm run build"
-  publish = ".next"
+  publish = "out"
 
 [build.environment]
   NODE_VERSION = "22"
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+# Autorise l'embarquement iframe cross-origin de la route /embed.
+[[headers]]
+  for = "/embed"
+  [headers.values]
+    Content-Security-Policy = "frame-ancestors *;"
+
+[[headers]]
+  for = "/embed/*"
+  [headers.values]
+    Content-Security-Policy = "frame-ancestors *;"

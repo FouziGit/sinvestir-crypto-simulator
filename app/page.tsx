@@ -8,6 +8,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import CryptoSimulator from "@/components/CryptoSimulator";
+import { Reveal } from "@/components/ui/Reveal";
 
 export default function Home() {
   return (
@@ -50,20 +51,26 @@ export default function Home() {
       {/* Hero + simulateur */}
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 sm:px-6">
         <section className="pt-12 pb-8 text-center sm:pt-16">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/60">
-            <LineChart className="h-3.5 w-3.5 text-brand" aria-hidden />
-            Suite d&apos;outils S&apos;investir
-          </span>
-          <h1 className="mx-auto mt-5 max-w-3xl text-balance text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            Simulateur d&apos;investissement{" "}
-            <span className="bg-gradient-to-r from-brand to-gold bg-clip-text text-transparent">
-              crypto
+          <Reveal>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/60">
+              <LineChart className="h-3.5 w-3.5 text-brand" aria-hidden />
+              Suite d&apos;outils S&apos;investir
             </span>
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-pretty text-base text-white/55 sm:text-lg">
-            Estimez la croissance de votre épargne crypto grâce aux intérêts
-            composés et aux versements programmés (DCA), impôts compris.
-          </p>
+          </Reveal>
+          <Reveal delay={0.07}>
+            <h1 className="mx-auto mt-5 max-w-3xl text-balance text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              Simulateur d&apos;investissement{" "}
+              <span className="bg-gradient-to-r from-brand to-gold bg-clip-text text-transparent">
+                crypto
+              </span>
+            </h1>
+          </Reveal>
+          <Reveal delay={0.14}>
+            <p className="mx-auto mt-4 max-w-2xl text-pretty text-base text-white/55 sm:text-lg">
+              Estimez la croissance de votre épargne crypto grâce aux intérêts
+              composés et aux versements programmés (DCA), impôts compris.
+            </p>
+          </Reveal>
         </section>
 
         <section className="pb-12">
@@ -72,25 +79,33 @@ export default function Home() {
 
         {/* Comment ça marche */}
         <section className="border-t border-white/5 py-12">
-          <h2 className="text-center text-2xl font-semibold text-white">
-            Comment fonctionne le simulateur
-          </h2>
+          <Reveal>
+            <h2 className="text-center text-2xl font-semibold text-white">
+              Comment fonctionne le simulateur
+            </h2>
+          </Reveal>
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <Feature
-              icon={<Percent className="h-5 w-5" aria-hidden />}
-              title="Intérêts composés"
-              text="Vos gains sont réinvestis chaque mois et génèrent à leur tour des gains, pour un effet boule de neige."
-            />
-            <Feature
-              icon={<Repeat className="h-5 w-5" aria-hidden />}
-              title="Versements programmés"
-              text="Le DCA lisse vos points d'entrée : un montant fixe investi chaque mois, quelle que soit la volatilité."
-            />
-            <Feature
-              icon={<ShieldCheck className="h-5 w-5" aria-hidden />}
-              title="Fiscalité incluse"
-              text="La Flat Tax (PFU) de 30 % est appliquée à la plus-value pour estimer votre gain net réel."
-            />
+            <Reveal delay={0.05} className="h-full">
+              <Feature
+                icon={<Percent className="h-5 w-5" aria-hidden />}
+                title="Intérêts composés"
+                text="Vos gains sont réinvestis chaque mois et génèrent à leur tour des gains, pour un effet boule de neige."
+              />
+            </Reveal>
+            <Reveal delay={0.13} className="h-full">
+              <Feature
+                icon={<Repeat className="h-5 w-5" aria-hidden />}
+                title="Versements programmés"
+                text="Le DCA lisse vos points d'entrée : un montant fixe investi chaque mois, quelle que soit la volatilité."
+              />
+            </Reveal>
+            <Reveal delay={0.21} className="h-full">
+              <Feature
+                icon={<ShieldCheck className="h-5 w-5" aria-hidden />}
+                title="Fiscalité incluse"
+                text="La Flat Tax (PFU) de 30 % est appliquée à la plus-value pour estimer votre gain net réel."
+              />
+            </Reveal>
           </div>
         </section>
       </main>
@@ -121,7 +136,7 @@ function Feature({
   text: string;
 }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
+    <div className="h-full rounded-xl border border-white/10 bg-white/[0.02] p-5">
       <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10 text-brand">
         {icon}
       </span>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { motion, type Variants } from "motion/react";
 import {
   ArrowUpRight,
   Coins,
@@ -13,9 +14,22 @@ import { simulate } from "@/lib/calc";
 import { formatEUR, formatMultiple, formatPct } from "@/lib/format";
 import { SliderField } from "@/components/ui/SliderField";
 import { StatCard } from "@/components/ui/StatCard";
+import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { GrowthChart } from "@/components/GrowthChart";
 
 const FLAT_TAX_RATE = 0.3;
+
+const EASE = [0.21, 0.47, 0.32, 0.98] as const;
+
+const container: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } },
+};
+
+const item: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: EASE } },
+};
 
 const DEFAULTS = {
   initialCapital: 1000,
@@ -152,69 +166,106 @@ export default function CryptoSimulator({ isEmbed = false }: CryptoSimulatorProp
         </div>
 
         {/* Résultats */}
-        <div className="lg:col-span-7">
-          <StatCard
-            tone="hero"
-            label={applyTax ? "Capital final net (après Flat Tax)" : "Capital final"}
-            value={formatEUR(result.finalNet)}
-            icon={<TrendingUp className="h-5 w-5" aria-hidden />}
-            hint={
-              <span className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
-                <span>
-                  Brut&nbsp;:{" "}
-                  <strong className="text-white/70">
-                    {formatEUR(result.finalGross)}
-                  </strong>
-                </span>
-                {applyTax ? (
+        <motion.div
+          className="lg:col-span-7"
+          variants={container}
+          initial="hidden"
+          animate="show"
+        >
+          <motion.div variants={item}>
+            <StatCard
+              tone="hero"
+              label={
+                applyTax ? "Capital final net (après Flat Tax)" : "Capital final"
+              }
+              value={<AnimatedNumber value={result.finalNet} format={formatEUR} />}
+              icon={<TrendingUp className="h-5 w-5" aria-hidden />}
+              hint={
+                <span className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
                   <span>
-                    Impôt&nbsp;:{" "}
-                    <strong className="text-loss/90">
-                      −{formatEUR(result.tax)}
+                    Brut&nbsp;:{" "}
+                    <strong className="text-white/70">
+                      <AnimatedNumber value={result.finalGross} format={formatEUR} />
                     </strong>
                   </span>
-                ) : null}
-                <span>
-                  Soit{" "}
-                  <strong className="text-gain">
-                    {formatMultiple(result.multiple)}
-                  </strong>{" "}
-                  le capital investi
+                  {applyTax ? (
+                    <span>
+                      Impôt&nbsp;:{" "}
+                      <strong className="text-loss/90">
+                        −<AnimatedNumber value={result.tax} format={formatEUR} />
+                      </strong>
+                    </span>
+                  ) : null}
+                  <span>
+                    Soit{" "}
+                    <strong className="text-gain">
+                      <AnimatedNumber
+                        value={result.multiple}
+                        format={formatMultiple}
+                      />
+                    </strong>{" "}
+                    le capital investi
+                  </span>
                 </span>
-              </span>
-            }
-          />
+              }
+            />
+          </motion.div>
 
           <div className="mt-4 grid grid-cols-2 gap-3">
-            <StatCard
-              tone="brand"
-              label="Total investi"
-              value={formatEUR(result.totalInvested)}
-              icon={<Wallet className="h-4 w-4" aria-hidden />}
-            />
-            <StatCard
-              tone="gold"
-              label={applyTax ? "Plus-values nettes" : "Plus-values"}
-              value={formatEUR(result.netGains)}
-            />
-            <StatCard
-              tone="default"
-              label="Plus-values brutes"
-              value={formatEUR(result.grossGains)}
-            />
-            <StatCard
-              tone="default"
-              label={`Flat Tax (${formatPct(FLAT_TAX_RATE * 100)})`}
-              value={applyTax ? `−${formatEUR(result.tax)}` : "—"}
-              icon={<Landmark className="h-4 w-4" aria-hidden />}
-            />
+            <motion.div variants={item} whileHover={{ y: -2 }}>
+              <StatCard
+                tone="brand"
+                label="Total investi"
+                value={
+                  <AnimatedNumber value={result.totalInvested} format={formatEUR} />
+                }
+                icon={<Wallet className="h-4 w-4" aria-hidden />}
+              />
+            </motion.div>
+            <motion.div variants={item} whileHover={{ y: -2 }}>
+              <StatCard
+                tone="gold"
+                label={applyTax ? "Plus-values nettes" : "Plus-values"}
+                value={<AnimatedNumber value={result.netGains} format={formatEUR} />}
+              />
+            </motion.div>
+            <motion.div variants={item} whileHover={{ y: -2 }}>
+              <StatCard
+                tone="default"
+                label="Plus-values brutes"
+                value={
+                  <AnimatedNumber value={result.grossGains} format={formatEUR} />
+                }
+              />
+            </motion.div>
+            <motion.div variants={item} whileHover={{ y: -2 }}>
+              <StatCard
+                tone="default"
+                label={`Flat Tax (${formatPct(FLAT_TAX_RATE * 100)})`}
+                value={
+                  applyTax ? (
+                    <>
+                      −<AnimatedNumber value={result.tax} format={formatEUR} />
+                    </>
+                  ) : (
+                    "—"
+                  )
+                }
+                icon={<Landmark className="h-4 w-4" aria-hidden />}
+              />
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Graphique */}
       <div className="px-5 pb-5 sm:px-6 sm:pb-6">
-        <div className="rounded-xl border border-white/10 bg-black/20 p-4 sm:p-5">
+        <motion.div
+          className="rounded-xl border border-white/10 bg-black/20 p-4 sm:p-5"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: EASE, delay: 0.25 }}
+        >
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
             <h3 className="text-sm font-semibold text-white">
               Évolution de votre investissement
@@ -225,7 +276,7 @@ export default function CryptoSimulator({ isEmbed = false }: CryptoSimulatorProp
             </div>
           </div>
           <GrowthChart data={result.series} />
-        </div>
+        </motion.div>
 
         <p className="mt-4 text-xs leading-relaxed text-white/35">
           Projection à titre indicatif, hors frais, sur la base d&apos;un

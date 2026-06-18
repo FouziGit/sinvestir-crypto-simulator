@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import {
   Area,
   AreaChart,
@@ -10,6 +10,16 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+
+/** True uniquement après hydratation client (SSR-safe, sans setState/effet). */
+const subscribe = () => () => {};
+function useHydrated() {
+  return useSyncExternalStore(
+    subscribe,
+    () => true,
+    () => false,
+  );
+}
 import type { YearPoint } from "@/lib/calc";
 import { formatEUR } from "@/lib/format";
 
@@ -86,14 +96,13 @@ function Row({
 
 /** Graphique d'évolution empilé : capital investi (bleu) vs plus-values (or). */
 export function GrowthChart({ data }: GrowthChartProps) {
-  // Recharts mesure son conteneur côté client : on diffère le rendu après le
-  // montage pour éviter l'avertissement de dimensions au prerender SSR.
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  // Recharts mesure son conteneur côté client : on diffère le rendu après
+  // hydratation pour éviter l'avertissement de dimensions au prerender SSR.
+  const hydrated = useHydrated();
 
   return (
     <div className="h-[280px] w-full sm:h-[320px]">
-      {!mounted ? null : (
+      {!hydrated ? null : (
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}

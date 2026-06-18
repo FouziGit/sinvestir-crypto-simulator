@@ -25,8 +25,8 @@ npm run dev          # http://localhost:3000  (et /embed pour l'intégration)
 Autres commandes :
 
 ```bash
-npm run build        # build de production
-npm run start        # sert le build de production
+npm run build        # build statique → dossier out/ (output: "export")
+npx serve out        # sert le build statique en local
 npm run test         # tests unitaires du moteur de calcul (Vitest)
 npm run lint         # ESLint
 ```
@@ -37,6 +37,7 @@ npm run lint         # ESLint
 - **Sorties** : capital final brut et net, total investi, plus‑values brutes et nettes, montant de l'impôt, multiple du capital.
 - **Graphique interactif** (Recharts) : aire empilée *Capital investi* (bleu) vs *Plus‑values* (or), avec tooltip détaillé par année.
 - **Sliders + saisie directe** synchronisés, format monétaire `fr-FR`, **responsive** desktop / mobile, et accessibilité (labels, `role="switch"`, focus visible).
+- **Animations sobres (Motion / framer-motion)** : les KPI s'animent en douceur quand on bouge les curseurs (compteur à ressort, technique inspirée d'un composant 21st.dev), révélations progressives à l'entrée, légère élévation au survol. Tout est coupé si `prefers-reduced-motion`.
 
 ## Partis pris techniques
 
@@ -44,8 +45,9 @@ npm run lint         # ESLint
 
 | Choix | Pourquoi |
 | --- | --- |
-| **Next.js 16 (App Router) + TypeScript** | Aligné sur votre stack interne. SSR/SSG natif, typage strict, et un composant client isolé pour l'interactivité. |
+| **Next.js 16 (App Router) + TypeScript** | Aligné sur votre stack interne. Build en **export statique** (`output: "export"`) car l'app n'a aucune logique serveur ; typage strict, composant client isolé pour l'interactivité. |
 | **Tailwind CSS v4** | Même base que `simulateurs.sinvestir.fr` (thème via `@theme`, police **Lexend**, palette bleu `#1098f7` / or `#f8d047` reprise du site). |
+| **Motion** (`motion/react`) | Animations sobres et fluides (compteurs KPI, révélations, micro‑interactions), avec respect de `prefers-reduced-motion`. |
 | **Recharts** | Graphiques React déclaratifs, légers, sans dépendance lourde. |
 | **lucide-react** | Jeu d'icônes cohérent et léger. |
 | **Vitest** | Tests unitaires rapides sur la logique métier. |
@@ -61,7 +63,7 @@ npm run lint         # ESLint
   → Il peut **remplacer le simulateur actuel** dans `simulateurs.sinvestir.fr`
   comme être **embarqué** depuis `sinvestir.fr`.
 - **Route `/embed`** : sert le composant seul, avec l'en‑tête HTTP
-  `Content-Security-Policy: frame-ancestors *` (voir [`next.config.ts`](next.config.ts))
+  `Content-Security-Policy: frame-ancestors *` (configuré dans [`netlify.toml`](netlify.toml))
   pour autoriser l'embarquement cross‑origin.
 
 ```html
@@ -79,13 +81,17 @@ Projection hors frais, à rendement constant — donc indicative.
 
 ### Déploiement
 
-- **Vercel (recommandé, votre stack)** : zéro configuration. Importer le repo →
-  build auto (`next build`). Aucun fichier spécifique requis.
-- **Netlify** : un [`netlify.toml`](netlify.toml) est fourni (plugin officiel
-  `@netlify/plugin-nextjs`) pour un déploiement équivalent.
+L'app est compilée en **export 100 % statique** (`output: "export"`) : `npm run build`
+produit un dossier `out/` servable par n'importe quel CDN. Aucun runtime serveur :
+déploiement robuste, et widget iframe instantané.
 
-J'ai laissé les deux car l'énoncé mentionne Netlify tandis que vos simulateurs
-tournent sur Vercel : le projet est prêt pour l'un comme pour l'autre.
+- **Netlify (démo en ligne)** : [`netlify.toml`](netlify.toml) publie `out/` et pose
+  l'en‑tête CSP sur `/embed`. Déploiement : `netlify deploy --prod --dir=out`.
+- **Vercel (votre stack)** : import zéro‑configuration ; sert le même export statique.
+
+Choix assumé : le simulateur n'ayant aucune logique serveur, l'export statique est
+plus simple, plus rapide et plus sûr qu'un runtime SSR — particulièrement adapté à
+un composant destiné à être embarqué.
 
 ## Mon regard de partenaire — pistes IA & automatisation
 
