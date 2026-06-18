@@ -10,7 +10,7 @@ interface GoTestButtonProps {
 }
 
 export function GoTestButton({
-  label = "Ouais, go test",
+  label = "Lancer le simulateur",
   className,
 }: GoTestButtonProps) {
   return (
