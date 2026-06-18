@@ -1,0 +1,12 @@
+# Déploiement Next.js sur Netlify.
+# Le plugin officiel @netlify/plugin-nextjs gère le rendu (SSR / routes / images).
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

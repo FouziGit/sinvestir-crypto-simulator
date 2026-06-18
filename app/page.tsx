@@ -1,65 +1,132 @@
-import Image from "next/image";
+import Link from "next/link";
+import {
+  ArrowRight,
+  Coins,
+  LineChart,
+  Percent,
+  Repeat,
+  ShieldCheck,
+} from "lucide-react";
+import CryptoSimulator from "@/components/CryptoSimulator";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="flex min-h-screen flex-col">
+      {/* Header */}
+      <header className="sticky top-0 z-30 border-b border-white/5 bg-surface/70 backdrop-blur">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3.5 sm:px-6">
+          <Link href="/" className="flex items-center gap-2.5">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-brand to-brand-dark text-white shadow-lg shadow-brand/30">
+              <Coins className="h-4.5 w-4.5" aria-hidden />
+            </span>
+            <div className="leading-tight">
+              <p className="text-sm font-bold text-white">S&apos;investir</p>
+              <p className="text-[11px] text-white/40">Simulateurs</p>
+            </div>
+          </Link>
+
+          <nav className="flex items-center gap-2">
+            <a
+              href="https://simulateurs.sinvestir.fr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden rounded-lg px-3 py-2 text-sm font-medium text-white/60 transition hover:text-white sm:block"
+            >
+              Tous les simulateurs
+            </a>
+            <a
+              href="https://sinvestir.fr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 rounded-lg bg-brand px-3.5 py-2 text-sm font-semibold text-white shadow-lg shadow-brand/30 transition hover:bg-brand/90"
+            >
+              S&apos;investir
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </a>
+          </nav>
+        </div>
+      </header>
+
+      {/* Hero + simulateur */}
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 sm:px-6">
+        <section className="pt-12 pb-8 text-center sm:pt-16">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/60">
+            <LineChart className="h-3.5 w-3.5 text-brand" aria-hidden />
+            Suite d&apos;outils S&apos;investir
+          </span>
+          <h1 className="mx-auto mt-5 max-w-3xl text-balance text-4xl font-bold tracking-tight text-white sm:text-5xl">
+            Simulateur d&apos;investissement{" "}
+            <span className="bg-gradient-to-r from-brand to-gold bg-clip-text text-transparent">
+              crypto
+            </span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="mx-auto mt-4 max-w-2xl text-pretty text-base text-white/55 sm:text-lg">
+            Estimez la croissance de votre épargne crypto grâce aux intérêts
+            composés et aux versements programmés (DCA), impôts compris.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+        </section>
+
+        <section className="pb-12">
+          <CryptoSimulator />
+        </section>
+
+        {/* Comment ça marche */}
+        <section className="border-t border-white/5 py-12">
+          <h2 className="text-center text-2xl font-semibold text-white">
+            Comment fonctionne le simulateur
+          </h2>
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <Feature
+              icon={<Percent className="h-5 w-5" aria-hidden />}
+              title="Intérêts composés"
+              text="Vos gains sont réinvestis chaque mois et génèrent à leur tour des gains, pour un effet boule de neige."
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+            <Feature
+              icon={<Repeat className="h-5 w-5" aria-hidden />}
+              title="Versements programmés"
+              text="Le DCA lisse vos points d'entrée : un montant fixe investi chaque mois, quelle que soit la volatilité."
+            />
+            <Feature
+              icon={<ShieldCheck className="h-5 w-5" aria-hidden />}
+              title="Fiscalité incluse"
+              text="La Flat Tax (PFU) de 30 % est appliquée à la plus-value pour estimer votre gain net réel."
+            />
+          </div>
+        </section>
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-white/5">
+        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-3 px-4 py-6 text-sm text-white/40 sm:flex-row sm:px-6">
+          <p>© 2026 S&apos;investir — Démo technique.</p>
+          <Link
+            href="/embed"
+            className="font-medium text-white/60 transition hover:text-white"
+          >
+            Voir la version intégrable (iframe) →
+          </Link>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function Feature({
+  icon,
+  title,
+  text,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  text: string;
+}) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
+      <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand/10 text-brand">
+        {icon}
+      </span>
+      <h3 className="mt-3 font-semibold text-white">{title}</h3>
+      <p className="mt-1.5 text-sm leading-relaxed text-white/50">{text}</p>
     </div>
   );
 }
