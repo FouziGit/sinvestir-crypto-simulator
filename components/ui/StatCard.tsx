@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-type Tone = "default" | "brand" | "gold" | "gain" | "hero";
+type Tone = "default" | "invested" | "gain" | "hero";
 
 interface StatCardProps {
   label: string;
@@ -12,21 +12,18 @@ interface StatCardProps {
 
 const toneValue: Record<Tone, string> = {
   default: "text-white",
-  brand: "text-brand",
-  gold: "text-gold",
-  gain: "text-gain",
+  invested: "text-sky-300",
+  gain: "text-emerald-300",
   hero: "text-white",
 };
 
 const toneShell: Record<Tone, string> = {
-  default: "border-white/10 bg-white/[0.03]",
-  brand: "border-brand/20 bg-brand/[0.06]",
-  gold: "border-gold/20 bg-gold/[0.06]",
-  gain: "border-gain/20 bg-gain/[0.06]",
-  hero: "border-brand/30 bg-gradient-to-br from-brand/15 via-brand/[0.06] to-transparent",
+  default: "border-white/[0.08] bg-white/[0.03]",
+  invested: "border-sky-400/20 bg-sky-400/[0.05]",
+  gain: "border-emerald-400/20 bg-emerald-400/[0.05]",
+  hero: "border-emerald-400/25 bg-zinc-900/60",
 };
 
-/** Carte de KPI : libellé, valeur mise en avant et indice optionnel. */
 export function StatCard({
   label,
   value,
@@ -38,25 +35,32 @@ export function StatCard({
 
   return (
     <div
-      className={`rounded-xl border p-4 ${toneShell[tone]} ${
-        isHero ? "sm:p-5" : ""
+      className={`relative overflow-hidden rounded-2xl border backdrop-blur-md ${toneShell[tone]} ${
+        isHero ? "p-5 sm:p-6" : "p-4"
       }`}
     >
-      <div className="flex items-center justify-between gap-2">
-        <p className="text-xs font-medium uppercase tracking-wide text-white/50">
+      {isHero ? (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-emerald-500/20 blur-[80px]"
+        />
+      ) : null}
+
+      <div className="relative flex items-center justify-between gap-2">
+        <p className="text-xs font-medium uppercase tracking-wider text-zinc-400">
           {label}
         </p>
-        {icon ? <span className="text-white/40">{icon}</span> : null}
+        {icon ? <span className="text-zinc-500">{icon}</span> : null}
       </div>
       <p
-        className={`mt-1.5 font-bold tabular-nums ${toneValue[tone]} ${
-          isHero ? "text-3xl sm:text-4xl" : "text-xl sm:text-2xl"
+        className={`relative mt-1.5 font-semibold tracking-tight tabular-nums ${toneValue[tone]} ${
+          isHero ? "text-4xl sm:text-5xl" : "text-xl sm:text-2xl"
         }`}
       >
         {value}
       </p>
       {hint ? (
-        <div className="mt-1 text-xs text-white/45">{hint}</div>
+        <div className="relative mt-2 text-xs text-zinc-400">{hint}</div>
       ) : null}
     </div>
   );

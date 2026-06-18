@@ -31,16 +31,16 @@ describe("simulate", () => {
 
   it("applies compound interest to a lump sum", () => {
     const r = simulate({ ...base, initialCapital: 1000, annualReturnPct: 10 });
-    expect(r.finalGross).toBeCloseTo(1100, 6); // 1000 * (1.10)
+    expect(r.finalGross).toBeCloseTo(1100, 6);
     expect(r.grossGains).toBeCloseTo(100, 6);
-    expect(r.tax).toBeCloseTo(30, 6); // 30 % de 100
+    expect(r.tax).toBeCloseTo(30, 6);
     expect(r.finalNet).toBeCloseTo(1070, 6);
     expect(r.netGains).toBeCloseTo(70, 6);
   });
 
   it("counts every monthly contribution in the invested total", () => {
     const r = simulate({ ...base, monthlyContribution: 100, annualReturnPct: 0 });
-    expect(r.totalInvested).toBe(1200); // 100 * 12
+    expect(r.totalInvested).toBe(1200);
     expect(r.finalGross).toBeCloseTo(1200, 6);
     expect(r.grossGains).toBeCloseTo(0, 6);
   });
@@ -81,7 +81,7 @@ describe("simulate", () => {
       annualReturnPct: 10,
       flatTaxRate: 0.3,
     });
-    expect(r.totalInvested).toBe(1000 + 150 * 120); // 19 000
+    expect(r.totalInvested).toBe(1000 + 150 * 120);
     expect(r.finalGross).toBeGreaterThan(r.totalInvested);
     expect(r.tax).toBeCloseTo(r.grossGains * 0.3, 6);
     expect(r.finalNet).toBeCloseTo(r.finalGross - r.tax, 6);
@@ -93,5 +93,17 @@ describe("simulate", () => {
     expect(r.series).toHaveLength(1);
     expect(r.finalGross).toBe(1000);
     expect(r.multiple).toBeCloseTo(1, 6);
+  });
+
+  it("pins beginning-of-period (annuity-due) contribution timing", () => {
+    const r = simulate({
+      initialCapital: 1000,
+      monthlyContribution: 150,
+      years: 10,
+      annualReturnPct: 10,
+      flatTaxRate: 0.3,
+    });
+    expect(r.finalGross).toBeCloseTo(32812.38, 1);
+    expect(r.finalNet).toBeCloseTo(28668.67, 1);
   });
 });
