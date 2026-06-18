@@ -6,9 +6,12 @@ import {
   Percent,
   Repeat,
   ShieldCheck,
+  Sparkles,
+  TrendingUp,
+  Wallet,
 } from "lucide-react";
-import CryptoSimulator from "@/components/CryptoSimulator";
 import { Reveal } from "@/components/ui/Reveal";
+import { GoTestButton } from "@/components/GoTestButton";
 
 export default function Home() {
   return (
@@ -28,14 +31,12 @@ export default function Home() {
           </Link>
 
           <nav className="flex items-center gap-2">
-            <a
-              href="https://simulateurs.sinvestir.fr"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/simulateur"
               className="hidden rounded-lg px-3 py-2 text-sm font-medium text-zinc-400 transition hover:text-white sm:block"
             >
-              Tous les simulateurs
-            </a>
+              Le simulateur
+            </Link>
             <a
               href="https://sinvestir.fr"
               target="_blank"
@@ -50,7 +51,7 @@ export default function Home() {
       </header>
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 sm:px-6">
-        <section className="pt-14 pb-9 text-center sm:pt-20">
+        <section className="pt-16 pb-12 text-center sm:pt-24">
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium text-zinc-300 backdrop-blur">
               <span className="relative flex h-1.5 w-1.5">
@@ -61,54 +62,128 @@ export default function Home() {
             </span>
           </Reveal>
           <Reveal delay={0.07}>
-            <h1 className="mx-auto mt-6 max-w-3xl text-balance text-4xl font-bold tracking-[-0.03em] text-white sm:text-6xl">
-              Simulez votre investissement{" "}
+            <h1 className="mx-auto mt-6 max-w-4xl text-balance text-4xl font-bold tracking-[-0.03em] text-white sm:text-6xl">
+              Combien votre épargne{" "}
               <span className="bg-gradient-to-r from-emerald-300 via-emerald-400 to-sky-400 bg-clip-text text-transparent">
                 crypto
-              </span>
+              </span>{" "}
+              peut-elle rapporter ?
             </h1>
           </Reveal>
           <Reveal delay={0.14}>
             <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-zinc-400 sm:text-lg">
-              Projetez la croissance de votre épargne grâce aux intérêts composés
-              et aux versements programmés (DCA), Flat Tax comprise.
+              Intérêts composés, versements programmés (DCA) et Flat Tax 30 % :
+              ce simulateur projette votre capital net, année après année.
+              Bougez les curseurs, le graphique se recalcule en direct.
             </p>
+          </Reveal>
+          <Reveal delay={0.21}>
+            <div className="mt-9 flex flex-col items-center gap-3">
+              <GoTestButton />
+              <p className="text-xs text-zinc-500">
+                ≈ 30 secondes · aucune inscription
+              </p>
+            </div>
           </Reveal>
         </section>
 
-        <section className="pb-14">
-          <CryptoSimulator />
-        </section>
-
-        <section className="border-t border-white/[0.06] py-14">
+        <section className="border-t border-white/[0.06] py-16">
           <Reveal>
             <h2 className="text-center text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-              Comment fonctionne le simulateur
+              Comment ça marche
             </h2>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <p className="mx-auto mt-3 max-w-xl text-center text-sm text-zinc-400">
+              Trois leviers, un seul résultat : votre capital net réel.
+            </p>
           </Reveal>
           <div className="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-3">
             <Reveal delay={0.05} className="h-full">
               <Feature
                 icon={<Percent className="h-5 w-5" aria-hidden />}
                 title="Intérêts composés"
-                text="Vos gains sont réinvestis chaque mois et génèrent à leur tour des gains, pour un effet boule de neige."
+                text="Vos gains sont réinvestis chaque mois et génèrent à leur tour des gains : l'effet boule de neige sur tout l'horizon."
               />
             </Reveal>
             <Reveal delay={0.13} className="h-full">
               <Feature
                 icon={<Repeat className="h-5 w-5" aria-hidden />}
                 title="Versements programmés"
-                text="Le DCA lisse vos points d'entrée : un montant fixe investi chaque mois, quelle que soit la volatilité."
+                text="Le DCA lisse vos points d'entrée : un montant fixe investi chaque mois, quelle que soit la volatilité du marché."
               />
             </Reveal>
             <Reveal delay={0.21} className="h-full">
               <Feature
                 icon={<ShieldCheck className="h-5 w-5" aria-hidden />}
                 title="Fiscalité incluse"
-                text="La Flat Tax (PFU) de 30 % est appliquée à la plus-value pour estimer votre gain net réel."
+                text="La Flat Tax (PFU) de 30 % est appliquée à la plus-value pour estimer votre gain net, pas un chiffre brut trompeur."
               />
             </Reveal>
           </div>
+        </section>
+
+        <section className="border-t border-white/[0.06] py-16">
+          <Reveal>
+            <h2 className="text-center text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+              Ce que vous obtenez
+            </h2>
+          </Reveal>
+          <div className="mt-9 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <Reveal delay={0.05} className="h-full">
+              <Output
+                icon={<TrendingUp className="h-4 w-4" aria-hidden />}
+                title="Capital final net"
+                text="Après Flat Tax, en euros."
+              />
+            </Reveal>
+            <Reveal delay={0.11} className="h-full">
+              <Output
+                icon={<Wallet className="h-4 w-4" aria-hidden />}
+                title="Total investi"
+                text="Ce que vous avez réellement versé."
+              />
+            </Reveal>
+            <Reveal delay={0.17} className="h-full">
+              <Output
+                icon={<Sparkles className="h-4 w-4" aria-hidden />}
+                title="Multiple du capital"
+                text="Le ×N réalisé sur votre mise."
+              />
+            </Reveal>
+            <Reveal delay={0.23} className="h-full">
+              <Output
+                icon={<LineChart className="h-4 w-4" aria-hidden />}
+                title="Graphe annuel"
+                text="Capital vs plus-values, an par an."
+              />
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="py-16">
+          <Reveal>
+            <div className="relative overflow-hidden rounded-3xl border border-emerald-400/20 bg-zinc-900/50 p-8 text-center backdrop-blur-md sm:p-12">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-emerald-500/20 blur-[90px]"
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -left-20 -bottom-24 h-72 w-72 rounded-full bg-sky-500/15 blur-[90px]"
+              />
+              <h2 className="relative text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                Prêt à voir les chiffres ?
+              </h2>
+              <p className="relative mx-auto mt-3 max-w-md text-sm text-zinc-400">
+                Vos hypothèses, votre horizon, votre résultat net — en temps
+                réel.
+              </p>
+              <div className="relative mt-7 flex justify-center">
+                <GoTestButton />
+              </div>
+            </div>
+          </Reveal>
         </section>
       </main>
 
@@ -144,6 +219,28 @@ function Feature({
       </span>
       <h3 className="mt-4 font-semibold tracking-tight text-white">{title}</h3>
       <p className="mt-1.5 text-sm leading-relaxed text-zinc-400">{text}</p>
+    </div>
+  );
+}
+
+function Output({
+  icon,
+  title,
+  text,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  text: string;
+}) {
+  return (
+    <div className="h-full rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5 backdrop-blur-md">
+      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.04] text-zinc-300 ring-1 ring-inset ring-white/10">
+        {icon}
+      </span>
+      <h3 className="mt-3.5 text-sm font-semibold tracking-tight text-white">
+        {title}
+      </h3>
+      <p className="mt-1 text-xs leading-relaxed text-zinc-400">{text}</p>
     </div>
   );
 }

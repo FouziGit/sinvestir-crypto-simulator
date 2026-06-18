@@ -9,7 +9,9 @@ composés** et aux **versements programmés (DCA)**, puis applique la **Flat Tax
 
 ## Démo
 
-- **Page complète** : `/` — le simulateur dans une page au design S'investir.
+- **Accueil** : `/` — page de présentation (design + animations) qui explique le
+  simulateur, avec un bouton vers l'outil.
+- **Simulateur** : `/simulateur` — l'outil interactif complet.
 - **Version intégrable (iframe)** : `/embed` — le widget seul, sans header/footer,
   prêt à être embarqué partout sans friction.
 
@@ -160,11 +162,13 @@ et de pilotage** pour l'écosystème commercial S'investir.
 ```
 app/
   layout.tsx          Police Inter, fond (grille + lueurs CSS), métadonnées, langue fr
-  page.tsx            Page complète (header, hero, simulateur, footer)
+  page.tsx            Accueil : présentation + CTA "Ouais, go test"
+  simulateur/page.tsx L'outil interactif (CryptoSimulator)
   embed/page.tsx      Version iframe (isEmbed)
   globals.css         Thème (tokens Tailwind v4 + reset slider natif)
 components/
   CryptoSimulator.tsx Composant principal (prop isEmbed)
+  GoTestButton.tsx    Bouton CTA animé vers /simulateur
   GrowthChart.tsx     Graphique Recharts custom (dégradés SVG + tooltip maison)
   Providers.tsx       MotionConfig (prefers-reduced-motion)
   ui/SliderField.tsx  Slider custom à ressort (Framer Motion)
